@@ -1,0 +1,13 @@
+<!--
+  ** mk_product_1
+  **
+  ** Build script that is run inside buildRoot to produce the product
+  -->
+<project name="mk_product_1" default="mk_product">
+
+        <property name="buildDirectory" value="${basedir}/../product"/>
+
+        <target name="mk_product">
+                <ant antfile="${eclipse.pdebuild.scripts}/productBuild/productBuild.xml"/>
+        </target>
+</project>

@@ -1,0 +1,242 @@
+<!-- ************************************************************************
+     * mk_product.xml
+     *
+     * Top-level properties
+     * feature.id
+     * feature.version
+     * feature.srcdir
+     ************************************************************************ -->
+<project name="mk_product">
+
+        <!--
+        <property environment="env"/>
+        <property file="${basedir}/packages.properties"/>
+        <property file="${basedir}/../etc/dvkit_info.properties"/>
+         -->
+        <property name="feature.version" value="1.0.0"/>
+        <property name="srcdir" value="${basedir}/srcdir"/>
+        <property name="build" value="${basedir}/build"/>
+        <property name="builder" value="${build}/builder"/>
+        <property name="buildId" value="id"/>
+        <property name="eclipsescripts.dir" value="${basedir}/eclipsescripts.dir"/>
+
+        <condition property="is_win">
+                <os family="windows"/>
+        </condition>
+
+        <condition property="build_ws" value="win32" else="gtk">
+                <os family="windows"/>
+        </condition>
+        <condition property="build_arch" value="x86_64" else="x86">
+                <os arch="amd64"/>
+        </condition>
+
+        <property file="${eclipsescripts.dir}/antfiles/mk_product.properties"/>
+        <target name="init">
+                <echo message="mk_product: eclipse.home=${eclipse.home}"/>
+                <delete dir="${build}"/>
+                <mkdir dir="${build}"/>
+                <mkdir dir="${build}/product"/>
+                <mkdir dir="${build}/buildRun"/>
+                <mkdir dir="${build}/result"/>
+
+                <copy todir="${build}/product">
+                        <fileset dir="${srcdir}">
+                                <include name="plugins/**"/>
+                                <include name="features/**"/>
+                                <exclude name="**/*.svn/**"/>
+                                <exclude name="**/*.git/**"/>
+                        </fileset>
+                </copy>
+
+                <copy todir="${build}/product" overwrite="true">
+                        <fileset dir="${srcdir}">
+                                <include name="features/**/*.xml"/>
+                                <include name="features/**/*.product"/>
+                                <include name="plugins/**/*.xml"/>
+                                <include name="plugins/**/*.MF"/>
+                                <include name="plugins/**/*.properties"/>
+                        </fileset>
+                        <filterset begintoken="1" endtoken="3">
+                                <filter token=".2." value="${feature.version}"/>
+                        </filterset>
+                </copy>
+        </target>
+
+        <target name="mk_product">
+                <copy file="${eclipsescripts.dir}/antfiles/mk_product_1.xml" todir="${build}/buildRun"/>
+                <ant antfile="${build}/buildRun/mk_product_1.xml" dir="${build}/buildRun">
+                        <property name="baseLocation" value="${eclipse.home}"/>
+        </ant>
+
+                <!--
+                <copy todir="${build}/result">
+                        <fileset dir="${build}/product/I.${buildId}">
+                                <include name="*.zip"/>
+                        </fileset>
+                </copy>
+                 -->
+
+                <antcall target="unpack">
+                        <param name="c_os" value="win32"/>
+                        <param name="c_ws" value="win32"/>
+                        <param name="c_arch" value="x86"/>
+                </antcall>
+                <antcall target="unpack">
+                        <param name="c_os" value="win32"/>
+                        <param name="c_ws" value="win32"/>
+                        <param name="c_arch" value="x86_64"/>
+                </antcall>
+                <antcall target="unpack">
+                        <param name="c_os" value="linux"/>
+                        <param name="c_ws" value="gtk"/>
+                        <param name="c_arch" value="x86"/>
+                </antcall>
+                <antcall target="unpack">
+                        <param name="c_os" value="linux"/>
+                        <param name="c_ws" value="gtk"/>
+                        <param name="c_arch" value="x86_64"/>
+                </antcall>
+                <antcall target="unpack">
+                        <param name="c_os" value="macosx"/>
+                        <param name="c_ws" value="cocoa"/>
+                        <param name="c_arch" value="x86_64"/>
+                </antcall>
+        </target>
+
+        <target name="unpack">
+                <mkdir dir="${build}/result/${c_os}.${c_arch}"/>
+                <unzip dest="${build}/result/${c_os}.${c_arch}"
+                        src="${build}/product/I.${buildId}/${buildId}-${c_os}.${c_ws}.${c_arch}.zip"/>
+                <move file="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}.app"
+                        tofile="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}"/>
+        </target>
+
+        <target name="package">
+                <antcall target="win_zip"/>
+                <antcall target="linux_zip"/>
+                <antcall target="macosx_zip"/>
+                <delete dir="${build}/result/linux.x86"/>
+                <delete dir="${build}/result/linux.x86_64"/>
+                <delete dir="${build}/result/macosx.x86_64"/>
+                <delete dir="${build}/result/win32.x86"/>
+                <delete dir="${build}/result/win32.x86_64"/>
+        </target>
+
+    <target name="win_zip">
+            <antcall target="do_package">
+                    <param name="c_os" value="win32"/>
+                    <param name="c_ws" value="win32"/>
+                    <param name="c_arch" value="x86"/>
+            </antcall>
+
+            <antcall target="do_package">
+                    <param name="c_os" value="win32"/>
+                    <param name="c_ws" value="win32"/>
+                    <param name="c_arch" value="x86_64"/>
+            </antcall>
+    </target>
+
+    <target name="linux_zip">
+            <antcall target="do_package">
+                    <param name="c_os" value="linux"/>
+                    <param name="c_ws" value="gtk"/>
+                    <param name="c_arch" value="x86_64"/>
+            </antcall>
+
+            <antcall target="do_package">
+                    <param name="c_os" value="linux"/>
+                    <param name="c_ws" value="gtk"/>
+                    <param name="c_arch" value="x86"/>
+            </antcall>
+    </target>
+
+    <target name="macosx_zip">
+            <antcall target="do_package">
+                    <param name="c_os" value="macosx"/>
+                    <param name="c_ws" value="cocoa"/>
+                    <param name="c_arch" value="x86_64"/>
+            </antcall>
+    </target>
+
+        <target name="do_package">
+        <condition property="c_is_win">
+                <equals arg1="${c_os}" arg2="win32"/>
+        </condition>
+
+        <!-- Processing Unix on Windows platform -->
+        <condition property="c_is_unix_win">
+                <and>
+                        <os family="windows"/>
+                        <or>
+                                <equals arg1="${c_os}" arg2="linux"/>
+                                <equals arg1="${c_os}" arg2="macosx"/>
+                        </or>
+                </and>
+        </condition>
+
+        <condition property="c_is_unix_unix">
+                <and>
+                        <not>
+                                <os family="windows"/>
+                        </not>
+                        <or>
+                                <equals arg1="${c_os}" arg2="linux"/>
+                                <equals arg1="${c_os}" arg2="macosx"/>
+                        </or>
+                </and>
+        </condition>
+
+        <condition property="unix_exe"
+                value="Contents/MacOS/${buildId}"
+                else="${buildId}">
+                <equals arg1="${c_os}" arg2="macosx"/>
+        </condition>
+
+
+                <antcall target="tar_unix_unix"/>
+                <antcall target="tar_unix_win"/>
+                <antcall target="zip_windows"/>
+
+        </target>
+
+        <target name="tar_unix_unix" if="c_is_unix_unix">
+                <exec executable="chmod" dir="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}">
+                        <arg value="+x"/>
+                        <arg value="${buildId}"/>
+                </exec>
+                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
+                        <arg value="czf"/>
+                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar.gz"/>
+                        <arg value="${buildId}-${feature.version}"/>
+                </exec>
+        </target>
+
+        <target name="tar_unix_win" if="c_is_unix_win">
+                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
+                        <arg value="--exclude=${buildId}-${feature.version}/${unix_exe}"/>
+                        <arg value="-cf"/>
+                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
+                        <arg value="${buildId}-${feature.version}"/>
+                </exec>
+                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
+                        <arg value="-rf"/>
+                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
+                        <arg value="--mode=755"/>
+                        <arg value="${buildId}-${feature.version}/${unix_exe}"/>
+                </exec>
+                <exec executable="gzip" dir="${build}/result" failonerror="true">
+                        <arg value="-f"/>
+                        <arg value="${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
+                </exec>
+        </target>
+
+        <target name="zip_windows" if="c_is_win">
+                <zip destfile="${build}/result/${buildId}-${feature.version}-${c_os}_${c_arch}.zip"
+                        basedir="${build}/result/${c_os}.${c_arch}"
+                                includes="${buildId}-${feature.version}/**">
+                </zip>
+        </target>
+
+</project>
+        
