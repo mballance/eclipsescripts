@@ -8,6 +8,8 @@ endif
 ECLIPSESCRIPTS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 ECLIPSESCRIPTS_DIR := $(shell cd $(ECLIPSESCRIPTS_DIR)/.. ; pwd)
 
+ECLIPSESCRIPTS_PKGS_DIRS += $(ECLIPSESCRIPTS_DIR)/mkfiles/packages
+
 include $(ECLIPSESCRIPTS_DIR)/mkfiles/platformdefs.mk
 include $(ECLIPSESCRIPTS_DIR)/mkfiles/eclipsetools.mk
 

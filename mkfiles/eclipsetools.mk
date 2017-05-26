@@ -2,6 +2,10 @@
 ECLIPSETOOLS_MKFILES_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 include $(ECLIPSETOOLS_MKFILES_DIR)/platformdefs.mk
 
+ifeq (,$(BUILD_TOOLS_DIR))
+BUILD_TOOLS_DIR := $(BUILD_DIR)/tools
+endif
+
 ECLIPSE_SDK_DIR := $(BUILD_TOOLS_DIR)/eclipse
 
 LAUNCHER_JAR = $(call NATIVE_PATH,$(wildcard $(ECLIPSE_SDK_DIR)/plugins/org.eclipse.equinox.launcher_*.jar))

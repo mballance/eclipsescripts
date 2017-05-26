@@ -28,7 +28,6 @@ equinox.install : $(BUILD_TOOLS_DIR)/equinox.unpack
 	$(Q)cd ../plugins ; \
 		for jar in $(EQUINOX_DIR)/plugins/org.eclipse.equinox.launcher*.jar; do \
 			dir=`basename $$jar | sed -e 's/.jar//g'`; \
-			echo "dir=$$dir ; jar=$$jar" ; \
 			mkdir $$dir; cd $$dir ; \
 			unzip -o $$jar ; \
 			cd .. ; \
