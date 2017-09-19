@@ -25,12 +25,24 @@ define ECLIPSE_INSTALL_IU
 	$(ECLIPSE_SDK) -application org.eclipse.equinox.p2.director -installIU $1 -repository $2 -tag $3 -destination $4
 endef
 
+define ECLIPSE_MIRROR_IU
+	$(ECLIPSE_ANT) -Drepository=$(1) -Diu=$(2) \
+	-Ddest=$(call NATIVE_PATH,$(shell pwd)) \
+	-buildfile $(call NATIVE_PATH,$(ECLIPSETOOLS_MKFILES_DIR)/../antfiles/mirror_iu.xml) mirror
+endef
+
 ifeq (Cygwin,$(uname_o))
 define ECLIPSE_REPOSITORY_URL
 file://$(shell cygpath -w $(1))
 endef
 else
-define ECLIPSE_REPOSITORY_URL
+  ifeq (Msys,$(uname_o))
+    define ECLIPSE_REPOSITORY_URL
+file:/$(shell echo $(1) | sed -e 's%^/\([a-zA-Z]\)%\1:%')
+    endef
+  else 
+    define ECLIPSE_REPOSITORY_URL
 file://$(1)
-endef
+    endef
+  endif
 endif

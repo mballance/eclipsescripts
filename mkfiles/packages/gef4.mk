@@ -43,11 +43,11 @@ $(BUILD_TOOLS_DIR)/gef.unpack : $(PACKAGES_DIR)/$(GEF_ZIP)
 	$(Q)cd $(GEF_DIR) ; unzip $^
 	$(Q)touch $@
 	
-GEF_FEATURES:=org.eclipse.gef.feature.group
+GEF_FEATURES:=org.eclipse.gef.feature.group,org.eclipse.draw2d.feature.group,org.eclipse.zest.feature.group
+GEF_REPOS=$(call ECLIPSE_REPOSITORY_URL,$(GEF_DIR)),$(call ECLIPSE_REPOSITORY_URL,$(ECLIPSE_PLATFORM_DIR))
 	
 gef.install : $(BUILD_TOOLS_DIR)/gef.unpack
-	$(Q)$(call ECLIPSE_INSTALL_IU,  $(GEF_FEATURES), \
-			$(call ECLIPSE_REPOSITORY_URL,$(GEF_DIR)), \
+	$(Q)$(call ECLIPSE_INSTALL_IU,  $(GEF_FEATURES), $(GEF_REPOS), \
 			GEF, $(PARENT_DIR_A))
 	$(Q)touch $@	
 	

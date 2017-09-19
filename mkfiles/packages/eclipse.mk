@@ -1,6 +1,8 @@
 
 
 ifneq (1,$(RULES))
+#ECLIPSE_VERSION:=4.7
+#ECLIPSE_DROP:=R-$(ECLIPSE_VERSION)-201706120950
 ECLIPSE_VERSION:=4.6.3
 ECLIPSE_DROP:=R-$(ECLIPSE_VERSION)-201703010400
 ECLIPSE_URL:=$(ECLIPSE_MIRROR_URL)/eclipse/downloads/drops4/$(ECLIPSE_DROP)
@@ -11,6 +13,7 @@ ECLIPSE_WIN32_X86_64_ZIP:=eclipse-SDK-$(ECLIPSE_VERSION)-win32-x86_64.zip
 
 ECLIPSE_PLATFORM_ZIP := org.eclipse.platform-$(ECLIPSE_VERSION).zip
 ECLIPSE_PLATFORM_URL := $(ECLIPSE_URL)/$(ECLIPSE_PLATFORM_ZIP)
+ECLIPSE_PLATFORM_DIR := $(BUILD_TOOLS_DIR)/eclipse_platform
 
 ifeq (true,$(IS_WIN))
 ifeq (x86_64,$(uname_m))
@@ -27,10 +30,14 @@ ECLIPSE_SDK_DIR := $(BUILD_TOOLS_DIR)/eclipse
 ifeq (Cygwin,$(uname_o))
 ECLIPSE_SDK_DIR_A = $(shell cygpath -w $(ECLIPSE_SDK_DIR) | sed -e 's%\\\\%/%g')
 else
-ECLIPSE_SDK_DIR_A = $(ECLIPSE_SDK_DIR)
+  ifeq (Msys,$(uname_o))
+    ECLIPSE_SDK_DIR_A = $(shell echo $(ECLIPSE_SDK_DIR) | sed -e 's%^\([a-zA-Z]\)%\1:%g')
+  else
+    ECLIPSE_SDK_DIR_A = $(ECLIPSE_SDK_DIR)
+  endif
 endif
 
-else
+else # Rules
 
 #********************************************************************
 #* eclipse_sdk.build

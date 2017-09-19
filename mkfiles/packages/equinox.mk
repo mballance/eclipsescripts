@@ -1,6 +1,8 @@
 
 ifneq (1,$(RULES))
 
+#EQUINOX_VERSION := Oxygen
+#EQUINOX_URL := $(ECLIPSE_MIRROR_URL)/equinox/drops/R-$(EQUINOX_VERSION)-201706120950/
 EQUINOX_VERSION := Neon.3
 EQUINOX_URL := $(ECLIPSE_MIRROR_URL)/equinox/drops/R-$(EQUINOX_VERSION)-201703010400/
 EQUINOX_ZIP := equinox-SDK-$(EQUINOX_VERSION).zip
@@ -28,7 +30,7 @@ equinox.install : $(BUILD_TOOLS_DIR)/equinox.unpack
 	$(Q)cd ../plugins ; \
 		for jar in $(EQUINOX_DIR)/plugins/org.eclipse.equinox.launcher*.jar; do \
 			dir=`basename $$jar | sed -e 's/.jar//g'`; \
-			mkdir $$dir; cd $$dir ; \
+			mkdir -p $$dir; cd $$dir ; \
 			unzip -o $$jar ; \
 			cd .. ; \
 		done

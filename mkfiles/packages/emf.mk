@@ -15,7 +15,7 @@ else
 
 $(PACKAGES_DIR)/$(EMF_ZIP) :
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
-	$(Q)wget -O $@ $(EMFT_MWE_URL)/$(EMF_ZIP)
+	$(Q)wget -O $@ $(EMF_URL)/$(EMF_ZIP)
 
 $(BUILD_TOOLS_DIR)/emf.unpack : $(PACKAGES_DIR)/$(EMF_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
@@ -37,6 +37,13 @@ $(BUILD_TOOLS_DIR)/mwe.unpack : $(PACKAGES_DIR)/$(EMFT_MWE_ZIP)
 
 EMFT_MWE_FEATURES:=org.eclipse.emf.mwe.sdk.feature.group
 EMF_FEATURES:=org.eclipse.emf.databinding.feature.group,org.eclipse.emf.edit.feature.group,org.eclipse.xsd.edit.feature.group,org.eclipse.emf.edit.ui.feature.group,org.eclipse.emf.ecore.edit.feature.group,org.eclipse.emf.codegen.feature.group,org.eclipse.emf.converter.feature.group,org.eclipse.emf.ecore.editor.feature.group
+EMF_RT_FEATURES:=org.eclipse.emf.databinding.feature.group,org.eclipse.emf.edit.feature.group,org.eclipse.xsd.edit.feature.group,org.eclipse.emf.edit.ui.feature.group,org.eclipse.emf.ecore.edit.feature.group
+
+emf_rt.install : $(BUILD_TOOLS_DIR)/emf.unpack 
+	$(Q)$(call ECLIPSE_INSTALL_IU, $(EMF_RT_FEATURES), \
+			$(call ECLIPSE_REPOSITORY_URL,$(EMF_DIR)), \
+			EmfRt, $(PARENT_DIR_A))
+	$(Q)touch $@
 
 emf.install : \
 		$(BUILD_TOOLS_DIR)/emf.unpack \

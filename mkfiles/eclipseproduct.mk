@@ -54,11 +54,16 @@ $(BUILD_DIR)/$($(PRODUCT)_TARGET)/$($(PRODUCT)_TARGET).product.build : \
 		-buildfile $(call NATIVE_PATH,$(ECLIPSESCRIPTS_DIR)/antfiles/mk_product.xml) \
 		$($(PRODUCT)_ANT_DEFINES) mk_product 
 	$(Q)touch $@
+	
+PLATFORMS := win32 linux macosx
+ARCHS := x86 x86_64
+#PLATFORMS := win32
+#ARCHS := x86_64
 
 $(BUILD_DIR)/$($(PRODUCT)_TARGET)/$($(PRODUCT)_TARGET).product : $(BUILD_DIR)/$($(PRODUCT)_TARGET)/$($(PRODUCT)_TARGET).product.build 
 	$(Q)if test "x$($(PRODUCT)_PKGS)" != "x"; then \
-		for plat in win32 linux macosx; do \
-			for arch in x86 x86_64; do \
+		for plat in $(PLATFORMS); do \
+			for arch in $(ARCHS); do \
 				dir=$(BUILD_DIR)/$($(PRODUCT)_TARGET)/result/$${plat}.$${arch}/$($(PRODUCT)_TARGET)-$($(PRODUCT)_VERSION); \
 				echo "test dir=$$dir"; \
 				if test -d $$dir; then \
@@ -70,7 +75,7 @@ $(BUILD_DIR)/$($(PRODUCT)_TARGET)/$($(PRODUCT)_TARGET).product : $(BUILD_DIR)/$(
 						BUILD_TOOLS_DIR=$(BUILD_TOOLS_DIR) \
 						ECLIPSESCRIPTS_PKGS_DIRS="$(ECLIPSESCRIPTS_PKGS_DIRS)" \
 						install_pkgs; \
-					if test $? -ne 0; then exit 1; fi \
+					if test $$? -ne 0; then exit 1; fi \
 				fi \
 			done \
 		done \

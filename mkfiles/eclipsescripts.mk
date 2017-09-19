@@ -5,6 +5,8 @@ ifneq (true,$(VERBOSE))
 Q=@
 endif
 
+export MSYS2_ARG_CONV_EXCL=*
+
 ECLIPSESCRIPTS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 ECLIPSESCRIPTS_DIR := $(shell cd $(ECLIPSESCRIPTS_DIR)/.. ; pwd)
 
