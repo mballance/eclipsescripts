@@ -1,0 +1,16 @@
+
+<project>
+	<property name="repository" value="foo"/>
+	<property name="iu" value="iu"/>
+	<property name="dest" value=""/>
+	
+	<target name="mirror">
+		<p2.mirror>
+			<repository location="file:/${dest}" name="Launchbar Repo"/>
+			<source>
+				<repository location="${repository}"/>
+			</source>
+			<iu id="org.eclipse.launchbar.feature.group"/>
+		</p2.mirror>	
+	</target>
+</project>

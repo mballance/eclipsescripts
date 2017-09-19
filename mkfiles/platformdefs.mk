@@ -12,12 +12,20 @@ endef
 
 PARENT_DIR_A=$(shell cd .. ; cygpath -w `pwd` | sed -e 's%\\%/%g')
 else
-IS_WIN:=false
-define NATIVE_PATH
-$1
-endef
+  ifeq (Msys,$(uname_o))
+    IS_WIN:=true
+    define NATIVE_PATH
+$(shell echo $(1) | sed -e 's%^/\([a-zA-Z]\)%\1:%')
+    endef
+    PARENT_DIR_A=$(shell cd .. ; pwd | sed -e 's%^/\([a-zA-Z]\)%\1:%')
+  else
+    IS_WIN:=false
+    define NATIVE_PATH
+      $1
+    endef
 
-PARENT_DIR_A=$(shell cd .. ; pwd)
+    PARENT_DIR_A=$(shell cd .. ; pwd)
+  endif
 endif
 
 ifeq (true,$(IS_WIN))

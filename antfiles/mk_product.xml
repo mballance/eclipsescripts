@@ -116,11 +116,13 @@
                 <antcall target="win_zip"/>
                 <antcall target="linux_zip"/>
                 <antcall target="macosx_zip"/>
+        	<!--
                 <delete dir="${build}/result/linux.x86"/>
                 <delete dir="${build}/result/linux.x86_64"/>
                 <delete dir="${build}/result/macosx.x86_64"/>
                 <delete dir="${build}/result/win32.x86"/>
                 <delete dir="${build}/result/win32.x86_64"/>
+               -->
         </target>
 
     <target name="win_zip">
