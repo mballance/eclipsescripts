@@ -1,0 +1,75 @@
+
+
+ifneq (1,$(RULES))
+JRE_FETCHED := $(PACKAGES_DIR)/jre.fetched
+JRE_VERSION := 1.8.0_144
+JRE_PKG_VERSION := 8u144
+JRE_DIRNAME := jre$(JRE_VERSION)
+JRE_LINUX_X86 := jre-$(JRE_PKG_VERSION)-linux-i586
+JRE_LINUX_X86_64 := jre-$(JRE_PKG_VERSION)-linux-x64
+JRE_WIN32_X86 := jre-$(JRE_PKG_VERSION)-windows-i586
+JRE_WIN32_X86_64 := jre-$(JRE_PKG_VERSION)-windows-x64
+JRE_OSX_X86_64 := jre-$(JRE_PKG_VERSION)-macosx-x64
+JRE_URL := http://download.oracle.com/otn-pub/java/jdk/$(jRE_PKG_VERSION)-b01/090f390dda5b47b9b721c7dfaa008135
+
+define JRE_WGET
+wget -O $@ --no-cookies --no-check-certificate \
+	--header "Cookie: oracleliense=accept-securebackup-cookie" $1
+endef
+else
+
+$(JRE_FETCHED) : \
+	$(PACKAGES_DIR)/$(JRE_LINUX_X86).tar.gz \
+	$(PACKAGES_DIR)/$(JRE_LINUX_X86_64).tar.gz \
+	$(PACKAGES_DIR)/$(JRE_WIN32_X86).zip \
+	$(PACKAGES_DIR)/$(JRE_WIN32_X86_64).zip \
+	$(PACKAGES_DIR)/$(JRE_OSX_X86_64).tar.gz
+	$(Q)touch $@
+	
+#jre.install : $(JRE_FETCHED)
+#	$(Q)if test "$(PLATFORM)" = "linux"; then \
+#	      if test "$(ARCH)" = "x86"; then \
+#           JRE_PKG=$(PACKAGES_DIR)/$(JRE_LINUX_X86).tar.gz; \
+#	      else \
+#           JRE_PKG=$(PACKAGES_DIR)/$(JRE_LINUX_X86_64).tar.gz; \
+#	      fi \
+#	    elif test "$(PLATFORM)" = "win32"; then \
+#	      if test "$(ARCH)" = "x86"; then \
+#           JRE_PKG=$(PACKAGES_DIR)/$(JRE_WIN32_X86).zip; \
+#	      else \
+#           JRE_PKG=$(PACKAGES_DIR)/$(JRE_WIN32_X86_64).zip; \
+#	      fi \
+#	    elif test "$(PLATFORM)" = "macosx"; then \
+#         JRE_PKG=$(PACKAGES_DIR)/$(JRE_OSX_X86_64).tar.gz; \
+#	    else \
+#         echo "Error: unknown platform $(PLATFORM)"; \
+#       fi ; \
+#       if test "$(PLATFORM)" = "macosx"; then \
+#         target_dir=../..; \
+#       else \
+#         target_dir=..; \
+#       fi ; \
+#        cd $$target_dir ; \
+#       if test "$(PLATFORM)" = "win32"; then \
+#         unzip -o $$JRE_PKG; \
+#       else \
+#         tar xvzf $$JRE_PKG; \
+#       fi
+	        
+
+$(PACKAGES_DIR)/$(JRE_LINUX_X86).tar.gz :
+	$(Q)$(call JRE_WGET, $(JRE_URL)/$(shell basename $@))
+
+$(PACKAGES_DIR)/$(JRE_LINUX_X86_64).tar.gz :
+	$(Q)$(call JRE_WGET, $(JRE_URL)/$(shell basename $@))
+
+$(PACKAGES_DIR)/$(JRE_WIN32_X86).zip :
+	$(Q)$(call JRE_WGET, $(JRE_URL)/$(shell basename $@))
+
+$(PACKAGES_DIR)/$(JRE_WIN32_X86_64).zip :
+	$(Q)$(call JRE_WGET, $(JRE_URL)/$(shell basename $@))
+
+$(PACKAGES_DIR)/$(JRE_OSX_X86_64).tar.gz :
+	$(Q)$(call JRE_WGET, $(JRE_URL)/$(shell basename $@))
+
+endif
