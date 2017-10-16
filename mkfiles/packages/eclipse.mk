@@ -20,6 +20,11 @@ else
 ECLIPSE_SDK_ZIP := $(ECLIPSE_WIN32_ZIP)
 endif
 else
+ifeq (x86_64,$(uname_m))
+ECLIPSE_SDK_TGZ := $(ECLIPSE_LINUX_X86_64_TGZ)
+else
+ECLIPSE_SDK_TGZ := $(ECLIPSE_LINUX_TGZ)
+endif
 # TODO
 endif
 
@@ -52,6 +57,9 @@ eclipse_sdk.unpack : $(PACKAGES_DIR)/$(ECLIPSE_SDK_ZIP)
 	$(Q)unzip $^
 	$(Q)touch $@
 else
+eclipse_sdk.unpack : $(PACKAGES_DIR)/$(ECLIPSE_SDK_TGZ)
+	$(Q)tar xvzf $^
+	$(Q)touch $@
 endif
 	
 eclipse_platform.install : eclipse_platform.unpack
@@ -74,5 +82,13 @@ $(PACKAGES_DIR)/$(ECLIPSE_WIN32_ZIP) :
 $(PACKAGES_DIR)/$(ECLIPSE_WIN32_X86_64_ZIP) : 
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)wget -O $@ $(ECLIPSE_URL)/$(ECLIPSE_WIN32_X86_64_ZIP)
+
+$(PACKAGES_DIR)/$(ECLIPSE_LINUX_TGZ) : 
+	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
+	$(Q)wget -O $@ $(ECLIPSE_URL)/$(ECLIPSE_LINUX_TGZ)
+	
+$(PACKAGES_DIR)/$(ECLIPSE_LINUX_X86_64_TGZ) : 
+	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
+	$(Q)wget -O $@ $(ECLIPSE_URL)/$(ECLIPSE_LINUX_X86_64_TGZ)
 
 endif
