@@ -44,6 +44,7 @@
                         <fileset dir="${srcdir}">
                                 <include name="plugins/**"/>
                                 <include name="features/**"/>
+                                <include name="macosx/**"/>
                                 <exclude name="**/*.svn/**"/>
                                 <exclude name="**/*.git/**"/>
                         </fileset>
@@ -53,6 +54,7 @@
                         <fileset dir="${srcdir}">
                                 <include name="features/**/*.xml"/>
                                 <include name="features/**/*.product"/>
+                                <include name="macosx/**/*.plist"/>
                                 <include name="plugins/**/*.xml"/>
                                 <include name="plugins/**/*.MF"/>
                                 <include name="plugins/**/*.properties"/>
@@ -116,6 +118,14 @@
                 <mkdir dir="${build}/result/${c_os}.${c_arch}"/>
                 <unzip dest="${build}/result/${c_os}.${c_arch}"
                         src="${build}/product/I.${buildId}/${buildId}-${c_os}.${c_ws}.${c_arch}.zip"/>
+        	
+        		<copy todir="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}.app"
+        			overwrite="true">
+        			<fileset dir="${build}/product/macosx">
+        				<include name="Contents/**"/>
+        			</fileset>
+       			</copy>
+        	
         	<!--
                 <move file="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}.app"
                         tofile="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}"/>
