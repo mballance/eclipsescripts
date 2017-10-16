@@ -19,13 +19,13 @@ VERBOSE_FLAG := -v
 endif
 
 ${PRODUCT}_ANT_DEFINES := \
-		-Dproduct=${PRODUCT_FILE} \
-		-DarchivePrefix=${PRODUCT}-${PRODUCT_VERSION}.app \
-		-DbuildId=${PRODUCT} \
-		-Dfeature.version=${PRODUCT_VERSION} \
-		-Dbuild=$(call NATIVE_PATH,${${PRODUCT}_BUILDDIR}) \
-		-Declipsescripts.dir=$(call NATIVE_PATH,$(ECLIPSESCRIPTS_DIR)) \
-		-Dsrcdir=$(call NATIVE_PATH,${PRODUCT_SRCDIR}) $(VERBOSE_FLAG)
+		-Dproduct=$(strip ${PRODUCT_FILE}) \
+		-DarchivePrefix=$(strip ${PRODUCT}-${PRODUCT_VERSION}.app) \
+		-DbuildId=$(strip ${PRODUCT}) \
+		-Dfeature.version=$(strip ${PRODUCT_VERSION}) \
+		-Dbuild=$(strip $(call NATIVE_PATH,${${PRODUCT}_BUILDDIR})) \
+		-Declipsescripts.dir=$(strip $(call NATIVE_PATH,$(ECLIPSESCRIPTS_DIR))) \
+		-Dsrcdir=$(strip $(call NATIVE_PATH,${PRODUCT_SRCDIR}) $(VERBOSE_FLAG))
 #		-Dos=$(osgi_os) -Dws=$(osgi_ws) -Darch=$(osgi_arch) 
 
 ifneq (1,$(RULES))
