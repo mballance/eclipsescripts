@@ -1,7 +1,7 @@
 
 
 ifneq (1,$(RULES))
-ECLIPSE_LAUNCHBAR_URL:=http://download.eclipse.org/releases/neon
+ECLIPSE_LAUNCHBAR_URL:=http://download.eclipse.org/releases/oxygen
 LAUNCHBAR_URL=https://hudson.eclipse.org/cdt/job/launchbar-master/lastSuccessfulBuild/artifact/repo/target/repository/*zip*/repository.zip
 
 LAUNCHBAR_DIR=$(BUILD_TOOLS_DIR)/launchbar
