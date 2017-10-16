@@ -26,7 +26,9 @@ $(JRE_FETCHED) : \
 	$(PACKAGES_DIR)/$(JRE_WIN32_X86_64).tar.gz \
 	$(PACKAGES_DIR)/$(JRE_OSX_X86_64).tar.gz
 	$(Q)touch $@
-	
+
+# jre1.8.0_144
+# jre1.8.0_144.jre
 jre.install : $(JRE_FETCHED)
 	echo "NOTE: jre.install with PLATFORM=$(PLATFORM) and ARCH=$(ARCH)"
 	$(Q)if test "$(PLATFORM)" = "linux"; then \
@@ -48,11 +50,14 @@ jre.install : $(JRE_FETCHED)
        fi ; \
        if test "$(PLATFORM)" = "macosx"; then \
          target_dir=../..; \
+	 src_dir=$(JRE_DIRNAME).jre; \
        else \
          target_dir=..; \
+	 src_dir=$(JRE_DIRNAME); \
        fi ; \
        cd $$target_dir ; \
-       tar xvzf $$JRE_PKG; 
+       tar xvzf $$JRE_PKG; \
+       mv $$src_dir jre;
 
 
 $(PACKAGES_DIR)/$(JRE_LINUX_X86).tar.gz :
