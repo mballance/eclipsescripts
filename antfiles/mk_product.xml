@@ -44,6 +44,7 @@
                         <fileset dir="${srcdir}">
                                 <include name="plugins/**"/>
                                 <include name="features/**"/>
+                                <include name="macosx/**"/>
                                 <exclude name="**/*.svn/**"/>
                                 <exclude name="**/*.git/**"/>
                         </fileset>
@@ -53,6 +54,7 @@
                         <fileset dir="${srcdir}">
                                 <include name="features/**/*.xml"/>
                                 <include name="features/**/*.product"/>
+                                <include name="macosx/**/*.plist"/>
                                 <include name="plugins/**/*.xml"/>
                                 <include name="plugins/**/*.MF"/>
                                 <include name="plugins/**/*.properties"/>
@@ -97,7 +99,7 @@
                         <param name="c_ws" value="gtk"/>
                         <param name="c_arch" value="x86_64"/>
                 </antcall>
-                <antcall target="unpack">
+                <antcall target="unpack_macosx">
                         <param name="c_os" value="macosx"/>
                         <param name="c_ws" value="cocoa"/>
                         <param name="c_arch" value="x86_64"/>
@@ -110,6 +112,24 @@
                         src="${build}/product/I.${buildId}/${buildId}-${c_os}.${c_ws}.${c_arch}.zip"/>
                 <move file="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}.app"
                         tofile="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}"/>
+        </target>
+	
+        <target name="unpack_macosx">
+                <mkdir dir="${build}/result/${c_os}.${c_arch}"/>
+                <unzip dest="${build}/result/${c_os}.${c_arch}"
+                        src="${build}/product/I.${buildId}/${buildId}-${c_os}.${c_ws}.${c_arch}.zip"/>
+        	
+        		<copy todir="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}.app"
+        			overwrite="true">
+        			<fileset dir="${build}/product/macosx">
+        				<include name="Contents/**"/>
+        			</fileset>
+       			</copy>
+        	
+        	<!--
+                <move file="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}.app"
+                        tofile="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}"/>
+        	 -->
         </target>
 
         <target name="package">
@@ -161,7 +181,7 @@
             </antcall>
     </target>
 
-        <target name="do_package">
+    <target name="do_package">
         <condition property="c_is_win">
                 <equals arg1="${c_os}" arg2="win32"/>
         </condition>
@@ -170,10 +190,14 @@
         <condition property="c_is_unix_win">
                 <and>
                         <os family="windows"/>
-                        <or>
-                                <equals arg1="${c_os}" arg2="linux"/>
-                                <equals arg1="${c_os}" arg2="macosx"/>
-                        </or>
+                        <equals arg1="${c_os}" arg2="linux"/>
+                </and>
+        </condition>
+    	
+        <condition property="c_is_macosx_win">
+                <and>
+                        <os family="windows"/>
+                        <equals arg1="${c_os}" arg2="macosx"/>
                 </and>
         </condition>
 
@@ -182,10 +206,16 @@
                         <not>
                                 <os family="windows"/>
                         </not>
-                        <or>
-                                <equals arg1="${c_os}" arg2="linux"/>
-                                <equals arg1="${c_os}" arg2="macosx"/>
-                        </or>
+                        <equals arg1="${c_os}" arg2="linux"/>
+                </and>
+        </condition>
+    	
+        <condition property="c_is_macosx_unix">
+                <and>
+                        <not>
+                                <os family="windows"/>
+                        </not>
+                        <equals arg1="${c_os}" arg2="macosx"/>
                 </and>
         </condition>
 
@@ -196,11 +226,12 @@
         </condition>
 
 
-                <antcall target="tar_unix_unix"/>
-                <antcall target="tar_unix_win"/>
-                <antcall target="zip_windows"/>
-
-        </target>
+        <antcall target="tar_unix_unix"/>
+        <antcall target="tar_macosx_unix"/>
+        <antcall target="tar_unix_win"/>
+        <antcall target="tar_macosx_win"/>
+        <antcall target="zip_windows"/>
+    </target>
 
         <target name="tar_unix_unix" if="c_is_unix_unix">
                 <exec executable="chmod" dir="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}">
@@ -213,10 +244,23 @@
                         <arg value="${buildId}-${feature.version}"/>
                 </exec>
         </target>
+	
+        <target name="tar_macosx_unix" if="c_is_macosx_unix">
+                <exec executable="chmod" dir="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}">
+                        <arg value="+x"/>
+                        <arg value="${buildId}"/>
+                </exec>
+                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
+                        <arg value="czf"/>
+                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar.gz"/>
+                        <arg value="${buildId}-${feature.version}.app"/>
+                </exec>
+        </target>
+
 
         <target name="tar_unix_win" if="c_is_unix_win">
                 <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
-                        <arg value="--exclude=${buildId}-${feature.version}/${unix_exe}"/>
+                        <arg value="--exclude=${buildId}-${feature.version}/${buildId}"/>
                         <arg value="-cf"/>
                         <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
                         <arg value="${buildId}-${feature.version}"/>
@@ -225,7 +269,26 @@
                         <arg value="-rf"/>
                         <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
                         <arg value="--mode=755"/>
-                        <arg value="${buildId}-${feature.version}/${unix_exe}"/>
+                        <arg value="${buildId}-${feature.version}/${buildId}"/>
+                </exec>
+                <exec executable="gzip" dir="${build}/result" failonerror="true">
+                        <arg value="-f"/>
+                        <arg value="${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
+                </exec>
+        </target>
+	
+        <target name="tar_macosx_win" if="c_is_macosx_win">
+                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
+                        <arg value="--exclude=${buildId}-${feature.version}.app/Contents/MacOS/${buildId}"/>
+                        <arg value="-cf"/>
+                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
+                        <arg value="${buildId}-${feature.version}.app"/>
+                </exec>
+                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
+                        <arg value="-rf"/>
+                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
+                        <arg value="--mode=755"/>
+                        <arg value="${buildId}-${feature.version}.app/Contents/MacOS/${buildId}"/>
                 </exec>
                 <exec executable="gzip" dir="${build}/result" failonerror="true">
                         <arg value="-f"/>

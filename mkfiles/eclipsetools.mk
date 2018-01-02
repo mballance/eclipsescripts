@@ -8,7 +8,7 @@ endif
 
 ECLIPSE_SDK_DIR := $(BUILD_TOOLS_DIR)/eclipse
 
-LAUNCHER_JAR = $(call NATIVE_PATH,$(wildcard $(ECLIPSE_SDK_DIR)/plugins/org.eclipse.equinox.launcher_*.jar))
+LAUNCHER_JAR = $(call NATIVE_PATH,$(lastword $(sort $(wildcard $(ECLIPSE_SDK_DIR)/plugins/org.eclipse.equinox.launcher_*.jar))))
 
 JAVA = java
 

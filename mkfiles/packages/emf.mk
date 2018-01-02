@@ -1,14 +1,14 @@
 
 
 ifneq (1,$(RULES))
-EMF_VERSION := 2.12.0
-EMF_URL := $(ECLIPSE_MIRROR_URL)/modeling/emf/emf/downloads/drops/$(EMF_VERSION)/R201605260356
+EMF_VERSION := 2.13.0
+EMF_URL := $(ECLIPSE_MIRROR_URL)/modeling/emf/emf/downloads/drops/$(EMF_VERSION)/R201706090928
 EMF_ZIP := emf-xsd-Update-$(EMF_VERSION).zip
 EMF_DIR := $(BUILD_TOOLS_DIR)/emf
 
-EMFT_MWE_VERSION := 2.9.0
-EMFT_MWE_URL := $(ECLIPSE_MIRROR_URL)/modeling/emft/mwe/downloads/drops/$(EMFT_MWE_VERSION)/R201605261059
-EMFT_MWE_ZIP := emft-mwe-2-lang-Update-2.9.0.zip
+EMFT_MWE_VERSION := 2.9.1
+EMFT_MWE_URL := $(ECLIPSE_MIRROR_URL)/modeling/emft/mwe/downloads/drops/$(EMFT_MWE_VERSION)/R201705291010
+EMFT_MWE_ZIP := emft-mwe-2-lang-Update-$(EMFT_MWE_VERSION).zip
 EMFT_MWE_DIR := $(BUILD_TOOLS_DIR)/mwe
 
 else
