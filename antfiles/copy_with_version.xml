@@ -1,0 +1,23 @@
+<project>
+	<property name="src_dir" value="${basedir}"/>
+	<property name="dst_dir" value="${basedir}"/>
+	<property name="version" value="0.0.0"/>
+
+	<copy todir="${dst_dir}" overwrite="true">
+		<fileset dir="${src_dir}">
+			<include name="plugins/**"/>
+			<include name="features/**"/>
+			<exclude name="**/*.svn"/>
+			<exclude name="**/*.git"/>
+		</fileset>
+	</copy>
+
+	<copy todir="${dst_dir}" overwrite="true">
+		<fileset dir="${src_dir}"
+			includes="**/*.xml,**/*.MF,**/*.properties"/>
+		<filterset begintoken="1" endtoken="3">
+			<filter token=".2." value="${version}"/>
+		</filterset>
+	</copy>
+
+</project>
