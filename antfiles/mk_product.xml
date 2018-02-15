@@ -82,17 +82,7 @@
                 <antcall target="unpack">
                         <param name="c_os" value="win32"/>
                         <param name="c_ws" value="win32"/>
-                        <param name="c_arch" value="x86"/>
-                </antcall>
-                <antcall target="unpack">
-                        <param name="c_os" value="win32"/>
-                        <param name="c_ws" value="win32"/>
                         <param name="c_arch" value="x86_64"/>
-                </antcall>
-                <antcall target="unpack">
-                        <param name="c_os" value="linux"/>
-                        <param name="c_ws" value="gtk"/>
-                        <param name="c_arch" value="x86"/>
                 </antcall>
                 <antcall target="unpack">
                         <param name="c_os" value="linux"/>
@@ -149,12 +139,6 @@
             <antcall target="do_package">
                     <param name="c_os" value="win32"/>
                     <param name="c_ws" value="win32"/>
-                    <param name="c_arch" value="x86"/>
-            </antcall>
-
-            <antcall target="do_package">
-                    <param name="c_os" value="win32"/>
-                    <param name="c_ws" value="win32"/>
                     <param name="c_arch" value="x86_64"/>
             </antcall>
     </target>
@@ -164,12 +148,6 @@
                     <param name="c_os" value="linux"/>
                     <param name="c_ws" value="gtk"/>
                     <param name="c_arch" value="x86_64"/>
-            </antcall>
-
-            <antcall target="do_package">
-                    <param name="c_os" value="linux"/>
-                    <param name="c_ws" value="gtk"/>
-                    <param name="c_arch" value="x86"/>
             </antcall>
     </target>
 
@@ -246,9 +224,10 @@
         </target>
 	
         <target name="tar_macosx_unix" if="c_is_macosx_unix">
-                <exec executable="chmod" dir="${build}/result/${c_os}.${c_arch}/${buildId}-${feature.version}">
+                <exec executable="chmod" 
+			dir="${build}/result/${c_os}.${c_arch}">
                         <arg value="+x"/>
-                        <arg value="${buildId}"/>
+                        <arg value="${buildId}-${feature.version}.app/Contents/MacOS/${buildId}"/>
                 </exec>
                 <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
                         <arg value="czf"/>
