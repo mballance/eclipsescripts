@@ -22,18 +22,19 @@ include $(MK_INCLUDES)
 
 RULES := 1
 
+all : $(BUILD_DIR)/tools/eclipse_sdk.build
+	$(Q)echo "Error: must build a product or feature"
+	$(Q)echo "Products: $(ECLIPSE_PRODUCTS)"
+	$(Q)echo "Features: $(ECLIPSE_FEATURES)"
+
 $(BUILD_DIR)/tools/eclipse_sdk.build : 
 	$(Q)if test ! -d $(BUILD_DIR)/tools; then mkdir -p $(BUILD_DIR)/tools; fi
 	$(Q)$(MAKE) -C $(BUILD_DIR)/tools -f $(ECLIPSESCRIPTS_DIR)/mkfiles/packages.mk \
-		ECLIPSE_PKGS="$(ECLIPSE_SDK_PKGS)" VERBOSE=$(VERBOSE) \
+		ECLIPSE_PKGS="$(sort $(ECLIPSE_SDK_PKGS))" VERBOSE=$(VERBOSE) \
 		PACKAGES_DIR=$(PACKAGES_DIR) BUILD_DIR=$(BUILD_DIR) \
 		BUILD_TOOLS_DIR=$(BUILD_TOOLS_DIR) \
 		eclipse_sdk.build
 
-all : $(BUILD_DIR)/eclipse_sdk.build
-	$(Q)echo "Error: must build a product or feature"
-	$(Q)echo "Products: $(ECLIPSE_PRODUCTS)"
-	$(Q)echo "Features: $(ECLIPSE_FEATURES)"
 
 include $(MK_INCLUDES)
 
