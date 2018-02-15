@@ -39,7 +39,7 @@ $(BUILD_TOOLS_DIR)/xpand.unpack : $(PACKAGES_DIR)/$(M2T_XPAND_UPDATE_ZIP)
 
 XTEXT_REPOSITORIES:=$(call ECLIPSE_REPOSITORY_URL,$(M2T_XPAND_DIR)),$(call ECLIPSE_REPOSITORY_URL,$(TMF_XTEXT_SDK_DIR)),$(call ECLIPSE_REPOSITORY_URL,$(EMFT_MWE_DIR))
 XTEXT_FEATURES:=org.eclipse.xtend.feature.group,org.eclipse.xpand.feature.group,org.eclipse.xtend.sdk.feature.group,org.eclipse.xtext.sdk.feature.group
-XTEXT_RT_FEATURES:=org.eclipse.xtend.feature.group,org.eclipse.xpand.feature.group,org.eclipse.xtend.feature.group,org.eclipse.xtext.feature.group
+XTEXT_RT_FEATURES:=org.eclipse.xtend.feature.group,org.eclipse.xpand.feature.group,org.eclipse.xtend.feature.group,org.eclipse.xtext.runtime.feature.group,org.eclipse.xtext.ui.feature.group
 
 xtext.runtime.install : \
 		$(BUILD_TOOLS_DIR)/xtext.unpack \
