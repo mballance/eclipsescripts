@@ -21,7 +21,7 @@ $(shell echo $(1) | sed -e 's%^/\([a-zA-Z]\)%\1:%')
   else
     IS_WIN:=false
     define NATIVE_PATH
-      $1
+$1
     endef
 
     PARENT_DIR_A=$(shell cd .. ; pwd)
