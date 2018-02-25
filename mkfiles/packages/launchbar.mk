@@ -20,7 +20,7 @@ else
 $(BUILD_TOOLS_DIR)/launchbar.unpack : $(PACKAGES_DIR)/$(LAUNCHBAR_ZIP)
 	$(Q)rm -rf $(LAUNCHBAR_DIR)
 	$(Q)mkdir -p $(LAUNCHBAR_DIR)
-	$(Q)cd $(LAUNCHBAR_DIR) ; unzip $^
+	$(Q)cd $(LAUNCHBAR_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 
 $(PACKAGES_DIR)/$(LAUNCHBAR_ZIP) :

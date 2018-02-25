@@ -44,7 +44,7 @@ jre.install : $(JRE_FETCHED)
        fi ; \
        cd $$target_dir ; \
        rm -rf jre; \
-       tar xvzf $$JRE_PKG; \
+       $(UNTAR_GZ) $$JRE_PKG; \
        mv $$src_dir jre;
 
 

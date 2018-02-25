@@ -54,11 +54,11 @@ eclipse_sdk.build : eclipse_sdk.unpack eclipse_platform.install
 	
 ifeq (true,$(IS_WIN))	
 eclipse_sdk.unpack : $(PACKAGES_DIR)/$(ECLIPSE_SDK_ZIP)
-	$(Q)unzip -o $^
+	$(Q)$(UNZIP) $^
 	$(Q)touch $@
 else
 eclipse_sdk.unpack : $(PACKAGES_DIR)/$(ECLIPSE_SDK_TGZ)
-	$(Q)tar xvzf $^
+	$(Q)$(UNTAR_GZ) $^
 	$(Q)touch $@
 endif
 	
@@ -68,7 +68,7 @@ eclipse_platform.install : eclipse_platform.unpack
 
 eclipse_platform.unpack : $(PACKAGES_DIR)/$(ECLIPSE_PLATFORM_ZIP)
 	$(Q)mkdir -p eclipse_platform
-	$(Q)cd eclipse_platform ; unzip -o $^
+	$(Q)cd eclipse_platform ; $(UNZIP) $^
 	$(Q)touch $@
 	
 $(PACKAGES_DIR)/$(ECLIPSE_PLATFORM_ZIP) :

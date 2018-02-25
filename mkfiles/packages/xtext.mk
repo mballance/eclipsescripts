@@ -23,7 +23,7 @@ $(BUILD_TOOLS_DIR)/xtext.unpack : $(PACKAGES_DIR)/$(TMF_XTEXT_SDK_UPDATE_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(TMF_XTEXT_SDK_DIR)
 	$(Q)mkdir -p $(TMF_XTEXT_SDK_DIR)
-	$(Q)cd $(TMF_XTEXT_SDK_DIR) ; unzip $^
+	$(Q)cd $(TMF_XTEXT_SDK_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 	
 $(PACKAGES_DIR)/$(M2T_XPAND_UPDATE_ZIP) :
@@ -34,7 +34,7 @@ $(BUILD_TOOLS_DIR)/xpand.unpack : $(PACKAGES_DIR)/$(M2T_XPAND_UPDATE_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(M2T_XPAND_DIR)
 	$(Q)mkdir -p $(M2T_XPAND_DIR)
-	$(Q)cd $(M2T_XPAND_DIR) ; unzip $^
+	$(Q)cd $(M2T_XPAND_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 
 XTEXT_REPOSITORIES:=$(call ECLIPSE_REPOSITORY_URL,$(M2T_XPAND_DIR)),$(call ECLIPSE_REPOSITORY_URL,$(TMF_XTEXT_SDK_DIR)),$(call ECLIPSE_REPOSITORY_URL,$(EMFT_MWE_DIR))

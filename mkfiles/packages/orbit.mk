@@ -16,7 +16,7 @@ $(BUILD_TOOLS_DIR)/orbit.unpack : $(PACKAGES_DIR)/$(ORBIT_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(ORBIT_DIR)
 	$(Q)mkdir -p $(ORBIT_DIR)
-	$(Q)cd $(ORBIT_DIR) ; unzip $^
+	$(Q)cd $(ORBIT_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 	
 APACHE_COMMONS_FEATURES:=org.apache.commons.lang,org.apache.commons.lang.source

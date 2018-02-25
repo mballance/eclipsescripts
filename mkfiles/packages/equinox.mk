@@ -16,7 +16,7 @@ $(BUILD_TOOLS_DIR)/equinox.unpack : $(PACKAGES_DIR)/$(EQUINOX_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(EQUINOX_DIR)
 	$(Q)mkdir -p $(EQUINOX_DIR)
-	$(Q)cd $(EQUINOX_DIR) ; unzip $^
+	$(Q)cd $(EQUINOX_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 	
 EQUINOX_FEATURES:=org.eclipse.equinox.executable.feature.group
@@ -29,7 +29,7 @@ equinox.install : $(BUILD_TOOLS_DIR)/equinox.unpack
 		for jar in $(EQUINOX_DIR)/plugins/org.eclipse.equinox.launcher*.jar; do \
 			dir=`basename $$jar | sed -e 's/.jar//g'`; \
 			mkdir -p $$dir; cd $$dir ; \
-			unzip -o $$jar ; \
+			$(UNZIP) -o $$jar ; \
 			cd .. ; \
 		done
 	$(Q)touch $@

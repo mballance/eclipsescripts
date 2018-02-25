@@ -1,4 +1,17 @@
 
+ifneq (true,$(VERBOSE))
+Q=@
+endif
+
+ifneq (true,$(VERBOSE))
+UNZIP:=unzip -o -qq
+UNTAR_GZ:=tar xzf
+UNTAR_BZ2:=tar xjf
+else # Verbose
+UNZIP:=unzip -o
+UNTAR_GZ:=tar xvzf
+UNTAR_BZ2:=tar xvhf
+endif
 
 uname_o:=$(shell uname -o)
 uname_m:=$(shell uname -m)
@@ -27,6 +40,7 @@ $1
     PARENT_DIR_A=$(shell cd .. ; pwd)
   endif
 endif
+
 
 ifeq (true,$(IS_WIN))
 osgi_os:=win32

@@ -21,7 +21,7 @@ $(BUILD_TOOLS_DIR)/gef4.unpack : $(PACKAGES_DIR)/$(GEF4_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(GEF4_DIR)
 	$(Q)mkdir -p $(GEF4_DIR)
-	$(Q)cd $(GEF4_DIR) ; unzip $^
+	$(Q)cd $(GEF4_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 	
 GEF4_FEATURES:=org.eclipse.gef4.mvc.sdk.feature.group
@@ -40,7 +40,7 @@ $(BUILD_TOOLS_DIR)/gef.unpack : $(PACKAGES_DIR)/$(GEF_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(GEF_DIR)
 	$(Q)mkdir -p $(GEF_DIR)
-	$(Q)cd $(GEF_DIR) ; unzip $^
+	$(Q)cd $(GEF_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 	
 GEF_FEATURES:=org.eclipse.gef.feature.group,org.eclipse.draw2d.feature.group,org.eclipse.zest.feature.group

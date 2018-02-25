@@ -21,7 +21,7 @@ $(BUILD_TOOLS_DIR)/emf.unpack : $(PACKAGES_DIR)/$(EMF_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(EMF_DIR)
 	$(Q)mkdir -p $(EMF_DIR)
-	$(Q)cd $(EMF_DIR) ; unzip $^
+	$(Q)cd $(EMF_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 	
 $(PACKAGES_DIR)/$(EMFT_MWE_ZIP) :
@@ -32,7 +32,7 @@ $(BUILD_TOOLS_DIR)/mwe.unpack : $(PACKAGES_DIR)/$(EMFT_MWE_ZIP)
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)rm -rf $(EMFT_MWE_DIR)
 	$(Q)mkdir -p $(EMFT_MWE_DIR)
-	$(Q)cd $(EMFT_MWE_DIR) ; unzip $^
+	$(Q)cd $(EMFT_MWE_DIR) ; $(UNZIP) $^
 	$(Q)touch $@
 
 EMFT_MWE_FEATURES:=org.eclipse.emf.mwe.sdk.feature.group
