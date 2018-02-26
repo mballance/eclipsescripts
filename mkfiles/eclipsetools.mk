@@ -31,6 +31,13 @@ define ECLIPSE_MIRROR_IU
 	-buildfile $(call NATIVE_PATH,$(ECLIPSETOOLS_MKFILES_DIR)/../antfiles/mirror_iu.xml) mirror
 endef
 
+# $1=URL
+# $2=path
+define ECLIPSE_MIRROR_REPO
+	$(ECLIPSE_SDK) -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source $(1) -destination file://$(call NATIVE_PATH,$(2))
+	$(ECLIPSE_SDK) -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source $(1) -destination file://$(call NATIVE_PATH,$(2))
+endef
+
 ifeq (Cygwin,$(uname_o))
 define ECLIPSE_REPOSITORY_URL
 file://$(shell cygpath -w $(1))

@@ -5,10 +5,12 @@ endif
 
 ifneq (true,$(VERBOSE))
 UNZIP:=unzip -o -qq
+ZIP:=zip -qq
 UNTAR_GZ:=tar xzf
 UNTAR_BZ2:=tar xjf
 else # Verbose
 UNZIP:=unzip -o
+ZIP:=zip
 UNTAR_GZ:=tar xvzf
 UNTAR_BZ2:=tar xvhf
 endif
