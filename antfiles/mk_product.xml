@@ -161,7 +161,10 @@
 
     <target name="do_package">
         <condition property="c_is_win">
+		<and>
                 <equals arg1="${c_os}" arg2="win32"/>
+		<os family="windows"/>
+		</and>
         </condition>
 
         <!-- Processing Unix on Windows platform -->
@@ -205,9 +208,11 @@
 
 
         <antcall target="tar_unix_unix"/>
-        <antcall target="tar_macosx_unix"/>
+	<antcall target="tar_macosx_unix"/>
+	<!--
         <antcall target="tar_unix_win"/>
-        <antcall target="tar_macosx_win"/>
+	<antcall target="tar_macosx_win"/>
+          -->
         <antcall target="zip_windows"/>
     </target>
 
@@ -243,13 +248,7 @@
                         <arg value="-cf"/>
                         <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
                         <arg value="${buildId}-${feature.version}"/>
-                </exec>
-                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
-                        <arg value="-rf"/>
-                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
-                        <arg value="--mode=755"/>
-                        <arg value="${buildId}-${feature.version}/${buildId}"/>
-                </exec>
+		</exec>
                 <exec executable="gzip" dir="${build}/result" failonerror="true">
                         <arg value="-f"/>
                         <arg value="${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
@@ -262,13 +261,7 @@
                         <arg value="-cf"/>
                         <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
                         <arg value="${buildId}-${feature.version}.app"/>
-                </exec>
-                <exec executable="tar" dir="${build}/result/${c_os}.${c_arch}" failonerror="true">
-                        <arg value="-rf"/>
-                        <arg value="../${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
-                        <arg value="--mode=755"/>
-                        <arg value="${buildId}-${feature.version}.app/Contents/MacOS/${buildId}"/>
-                </exec>
+		</exec>
                 <exec executable="gzip" dir="${build}/result" failonerror="true">
                         <arg value="-f"/>
                         <arg value="${buildId}-${feature.version}-${c_os}_${c_arch}.tar"/>
