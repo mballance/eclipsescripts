@@ -2,13 +2,14 @@
 
 ifneq (1,$(RULES))
 JRE_FETCHED := $(PACKAGES_DIR)/jre.fetched
-JRE_VERSION := 1.8.0_171
-JRE_PKG_VERSION := 8u171
+JRE_VERSION := 1.8.0_181
+JRE_PKG_VERSION := 8u181
 JRE_DIRNAME := jre$(JRE_VERSION)
 JRE_LINUX_X86_64 := jre-$(JRE_PKG_VERSION)-linux-x64
 JRE_WIN32_X86_64 := jre-$(JRE_PKG_VERSION)-windows-x64
 JRE_OSX_X86_64 := jre-$(JRE_PKG_VERSION)-macosx-x64
-JRE_URL := http://download.oracle.com/otn-pub/java/jdk/$(JRE_PKG_VERSION)-b11/512cd62ec5174c3487ac17c61aaa89e8
+JRE_URL := http://download.oracle.com/otn-pub/java/jdk/$(JRE_PKG_VERSION)-b13/96a7b8442fe848ef90c96a2fad6ed6d1
+#http://download.oracle.com/otn-pub/java/jdk/$(JRE_PKG_VERSION)-b11/512cd62ec5174c3487ac17c61aaa89e8
 
 define JRE_WGET
 wget -O $@ --no-cookies --no-check-certificate \

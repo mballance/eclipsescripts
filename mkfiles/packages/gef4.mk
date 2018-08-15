@@ -1,9 +1,9 @@
 
 ifneq (1,$(RULES))
 
-GEF4_VERSION := 4.1.0
-GEF4_URL := $(ECLIPSE_MIRROR_URL)/tools/gef/downloads/drops/gef4/$(GEF4_VERSION)/R201609060946
-GEF4_ZIP := GEF4-Update-4.1.0.zip
+GEF4_VERSION := 5.0.100
+GEF4_URL := $(ECLIPSE_MIRROR_URL)/tools/gef/downloads/drops/$(GEF4_VERSION)/R201805280201
+GEF4_ZIP := GEF4-Update-5.0.100.zip
 GEF4_DIR := $(BUILD_TOOLS_DIR)/gef4
 
 GEF_VERSION := 4.0.0

@@ -1,7 +1,7 @@
 
 
 ifneq (1,$(RULES))
-LAUNCHBAR_DIR_LEAF=tools/cdt/launchbar/oxygen.2/launchbar-2.2.0
+LAUNCHBAR_DIR_LEAF=tools/cdt/launchbar/photon/m7
 LAUNCHBAR_URL=$(ECLIPSE_MIRROR_URL)/$(LAUNCHBAR_DIR_LEAF)
 
 LAUNCHBAR_DIR=$(BUILD_TOOLS_DIR)/launchbar
